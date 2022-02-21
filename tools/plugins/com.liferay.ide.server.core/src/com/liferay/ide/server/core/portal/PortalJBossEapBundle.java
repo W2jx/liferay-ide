@@ -16,9 +16,11 @@ package com.liferay.ide.server.core.portal;
 
 import com.liferay.ide.server.util.JavaUtil;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.jdt.launching.IVMInstall;
@@ -85,6 +87,15 @@ public class PortalJBossEapBundle extends PortalJBossBundle {
 		args.add("-Duser.timezone=GMT");
 		args.add("-Dorg.jboss.logmanager.nocolor=true");
 
+		File wildflyCommonLib = getJbossLib(bundlePath, "/modules/system/layers/base/org/wildfly/common/main/");
+		if (Objects.nonNull(wildflyCommonLib)) {
+			args.add("-Xbootclasspath/p:\"" + wildflyCommonLib.getAbsolutePath() + "\"");
+		}
+		
+		File jbossLogManagerLib = getJbossLib(bundlePath, "/modules/system/layers/base/org/jboss/logmanager/main/");
+		if (Objects.nonNull(jbossLogManagerLib)) {
+			args.add("-Xbootclasspath/p:\"" + jbossLogManagerLib.getAbsolutePath() + "\"");
+		}
 		return args.toArray(new String[0]);
 	}
 
